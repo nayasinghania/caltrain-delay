@@ -1,9 +1,8 @@
 # Cal Ignite
 
+## Setup
+pip install -r requirements.txt
+
 ## Data
-
-### Gridmet
-Daily California weather conditions per 4km block from 2018 - 2025
-
-### Cal Fire
-All California wildfire incidents from 2018 - 2025
+python scripts/gridmet.py
+python scripts/gridmet_ca.py

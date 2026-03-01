@@ -1,5 +1,4 @@
-data/gridmet
-data/gridmet_ca
+data/raw
 
 venv
 **/__pycache__

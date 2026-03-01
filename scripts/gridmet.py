@@ -5,7 +5,7 @@ import requests
 
 features = ["vpd", "tmmx", "vs", "rmin", "pr"]
 years = range(2018, 2025)
-os.makedirs("gridmet", exist_ok=True)
+os.makedirs("data/raw/gridmet", exist_ok=True)
 
 
 def download_file(feat, year):
