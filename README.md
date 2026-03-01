@@ -1,8 +1,9 @@
 # Cal Ignite
 
 ## Setup
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 ## Data
-python scripts/gridmet.py
-python scripts/gridmet_ca.py
+
+1. `python scripts/gridmet.py`
+2. `python scripts/gridmet_ca.py`
