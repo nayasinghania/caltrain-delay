@@ -1,4 +1,3 @@
-xarray
-netcdf4
-h5netcdf
-pandas
+python-dotenv
+python-dateutil
+black

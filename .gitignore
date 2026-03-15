@@ -1,4 +1,6 @@
-data/raw
+/data
+
+.env
 
 venv
 **/__pycache__
