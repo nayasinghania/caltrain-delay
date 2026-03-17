@@ -1,5 +1,7 @@
 import csv
 import json
+import os
+from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timedelta, timezone
 
 start_year = 2025
@@ -32,8 +34,7 @@ CSV_COLUMNS = [csv_name for _, csv_name in HOURLY_FIELD_PAIRS]
 
 
 def weather_csv():
-    print("hello")
-    with open("./data.csv", "w", newline="") as out:
+    with open("./data/weather.csv", "w", newline="") as out:
         writer = csv.DictWriter(out, fieldnames=["timestamp"] + CSV_COLUMNS)
         writer.writeheader()
         for y in range(start_year, end_year + 1):
@@ -66,4 +67,90 @@ def weather_csv():
                         writer.writerow(row)
 
 
-weather_csv()
+STOP_OBS_KEEP = [
+    "trip_id",
+    "vehicle_id",
+    "stop_sequence",
+    "observed_arrival_time",
+    "observed_departure_time",
+    "scheduled_arrival_time",
+    "scheduled_departure_time",
+    "dwell_time_secs",
+    "route_id",
+    "direction_id",
+    "from_stop_id",
+    "to_stop_id",
+]
+
+
+def _parse_gtfs_time(service_date, time_str):
+    """Parse GTFS service_date (YYYYMMDD) + time (HH:MM:SS, HH may be >= 24)."""
+    date = datetime.strptime(service_date, "%Y%m%d")
+    h, m, s = map(int, time_str.split(":"))
+    return date + timedelta(hours=h, minutes=m, seconds=s)
+
+
+_weather = {}
+
+
+def _init_worker(w):
+    global _weather
+    _weather = w
+
+
+def _process_month(args):
+    y, m = args
+    path = f"./data/gtfs_unzipped/{y}-{m:02d}/stop_observations.txt"
+    rows = []
+    try:
+        f = open(path, newline="")
+    except FileNotFoundError:
+        return rows
+    with f:
+        print(f"processing {path}")
+        for obs in csv.DictReader(f):
+            if obs["agency_id"] != "CT":
+                continue
+            if not obs["observed_arrival_time"]:
+                continue
+            dt = _parse_gtfs_time(obs["service_date"], obs["observed_arrival_time"])
+            ts = dt.strftime("%Y-%m-%dT%H:%M")
+            w = _weather.get(ts, {})
+            row = {"timestamp": ts}
+            row.update({k: w.get(k, "") for k in CSV_COLUMNS})
+            row.update({k: obs[k] for k in STOP_OBS_KEEP})
+            rows.append(row)
+    print(f"done {path}: {len(rows)} rows")
+    return rows
+
+
+def gtfs_csv():
+    weather = {}
+    with open("./data/weather.csv", newline="") as f:
+        for row in csv.DictReader(f):
+            weather[row["timestamp"]] = row
+
+    months = []
+    for y in range(start_year, end_year + 1):
+        m_start = start_month if y == start_year else 1
+        m_end = end_month if y == end_year else 12
+        for m in range(m_start, m_end + 1):
+            months.append((y, m))
+
+    with open("./data.csv", "w", newline="") as out:
+        fieldnames = ["timestamp"] + CSV_COLUMNS + STOP_OBS_KEEP
+        writer = csv.DictWriter(out, fieldnames=fieldnames)
+        writer.writeheader()
+        with ProcessPoolExecutor(
+            max_workers=os.cpu_count(),
+            initializer=_init_worker,
+            initargs=(weather,),
+        ) as ex:
+            for rows in ex.map(_process_month, months):
+                for row in rows:
+                    writer.writerow(row)
+
+
+if __name__ == "__main__":
+    weather_csv()
+    gtfs_csv()
