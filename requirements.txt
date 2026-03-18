@@ -5,4 +5,12 @@ openmeteo-requests
 requests-cache
 retry-requests
 
+pandas
+scikit-learn
+xgboost
+torch
+torchvision
+
+fastapi[standard]
+
 black

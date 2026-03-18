@@ -86,8 +86,7 @@ def get_weather(openmeteo, latitude, longitude, start_date, end_date, output_dir
 
 
 if __name__ == "__main__":
-    cache_session = requests_cache.CachedSession(".cache", expire_after=3600)
-    retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
+    retry_session = retry(retries=5, backoff_factor=0.2)
     openmeteo = openmeteo_requests.Client(session=retry_session)
 
     latitude = 37.4419

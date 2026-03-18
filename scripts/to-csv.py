@@ -137,7 +137,7 @@ def gtfs_csv():
         for m in range(m_start, m_end + 1):
             months.append((y, m))
 
-    with open("./data.csv", "w", newline="") as out:
+    with open("./data/data-full.csv", "w", newline="") as out:
         fieldnames = ["timestamp"] + CSV_COLUMNS + STOP_OBS_KEEP
         writer = csv.DictWriter(out, fieldnames=fieldnames)
         writer.writeheader()
