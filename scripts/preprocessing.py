@@ -41,6 +41,11 @@ df = df.drop(
 
 df["delay"] = df["delay"].round(3)
 
+# Filter out rows where delay > 30 minutes
+print(f"Rows before filtering: {len(df)}")
+df = df[df["delay"] <= 30]
+print(f"Rows after filtering (delay <= 30 mins): {len(df)}")
+
 print("Exporting preprocessed data to data-preproc.csv")
 df.to_csv("data/data.csv", index=False)
 print("Exported preprocessed data to data-preproc.csv")

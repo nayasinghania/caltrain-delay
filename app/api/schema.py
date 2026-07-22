@@ -2,14 +2,8 @@ from pydantic import BaseModel
 
 
 class TrainData(BaseModel):
-    temperature: float
     precipitation_probability: float
-    precipitation: float
-    wind_speed: float
-    wind_gusts: float
-    wind_direction: float
     visibility: float
-    weather_code: int
     vehicle_id: int
     stop_sequence: int
     route_id: int

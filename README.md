@@ -19,23 +19,17 @@
 curl -X POST "http://localhost:8000/predict" \
   -H "Content-Type: application/json" \
   -d '{
-    "temperature": 12.896,
     "precipitation_probability": 0.0,
-    "precipitation": 0.0,
-    "wind_speed": 6.725,
-    "wind_gusts": 6.84,
-    "wind_direction": 15.524,
     "visibility": 18700.0,
-    "weather_code": 0,
     "vehicle_id": 601,
     "stop_sequence": 2,
     "route_id": 3,
     "direction_id": 0,
     "from_stop_id": 70271,
     "to_stop_id": 70261,
-    "hour": 6,
-    "minute": 56,
-    "day": 1,
-    "month": 3
+    "hour": 9,
+    "minute": 1,
+    "day": 21,
+    "month": 7
   }'
 ```
