@@ -16,20 +16,10 @@
 
 *Curl request for testing*
 ```bash
-curl -X POST "http://localhost:8000/predict" \
+curl http://localhost:8000/predict \
   -H "Content-Type: application/json" \
-  -d '{
-    "precipitation_probability": 0.0,
-    "visibility": 18700.0,
-    "vehicle_id": 601,
-    "stop_sequence": 2,
-    "route_id": 3,
-    "direction_id": 0,
-    "from_stop_id": 70271,
-    "to_stop_id": 70261,
-    "hour": 9,
-    "minute": 1,
-    "day": 21,
-    "month": 7
-  }'
+  -d '{"vehicle_id":137, "station_name":"San Jose Diridon"}'
 ```
+
+- direction_id 0 is northbound, 1 is southbound
+- vehicle id will be provided by the user

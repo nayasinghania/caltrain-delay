@@ -36,6 +36,8 @@ df = df.drop(
         "observed_departure_time",
         "observed_arrival_time",
         "scheduled_arrival_time",
+        "from_stop_id",
+        "to_stop_id"
     ]
 )
 

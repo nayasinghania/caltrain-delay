@@ -2,7 +2,10 @@ import joblib
 import openmeteo_requests
 from fastapi import FastAPI
 from retry_requests import retry
-from schema import TrainData
+from schema import InputData
+import pytz
+from datetime import datetime
+import json
 
 app = FastAPI()
 
@@ -12,9 +15,32 @@ model = joblib.load(model_path)
 retry_session = retry(retries=5, backoff_factor=0.2)
 openmeteo = openmeteo_requests.Client(session=retry_session)
 
+def get_stop_sequence(train_id, station_name):
+    with open("sequences.json", "r") as f:
+        data = json.load(f)
+
+    train_id = int(train_id)
+
+    for pattern in data["patterns"]:
+        if train_id in pattern["train_ids"]:
+            return pattern["stop_sequence"].get(station_name)
+
+    return None
+
+ROUTE_ID_MAP = {
+    "1": 2,
+    "4": 1,
+    "5": 0,
+    "6": 3,
+    "8": 4,
+}
+
+def get_route_id(vehicle_id):
+    first_digit = str(vehicle_id)[0]
+    return ROUTE_ID_MAP.get(first_digit)
 
 @app.post("/predict")
-def predict(data: TrainData):
+def predict(data: InputData):
     try:
         url = "https://api.open-meteo.com/v1/forecast"
         params = {
@@ -43,28 +69,29 @@ def predict(data: TrainData):
         current_data = {
             var: current.Variables(i).Value() for i, var in enumerate(variables)
         }
-        print(current_data)
+
+        tz = pytz.timezone("America/Los_Angeles")
+        now = datetime.now(tz)
         data_dict = data.model_dump()
         features = [
             current_data["temperature_2m"],
-            data_dict["precipitation_probability"],
+            0.0,
             current_data["precipitation"],
             current_data["wind_speed_10m"],
             current_data["wind_gusts_10m"],
             current_data["wind_direction_10m"],
-            data_dict["visibility"],
+            18700.0,
             current_data["weather_code"],
             data_dict["vehicle_id"],
-            data_dict["stop_sequence"],
-            data_dict["route_id"],
-            data_dict["direction_id"],
-            data_dict["from_stop_id"],
-            data_dict["to_stop_id"],
-            data_dict["hour"],
-            data_dict["minute"],
-            data_dict["day"],
-            data_dict["month"],
+            get_stop_sequence(data_dict["vehicle_id"], data_dict["station_name"]),
+            get_route_id(data_dict["vehicle_id"]),
+            0 if data_dict['vehicle_id'] % 2 == 1 else 1,
+            now.hour,
+            now.minute,
+            now.day,
+            now.month,
         ]
+        print(features)
         prediction = model.predict([features])[0]
 
         return {"result": float(prediction)}
