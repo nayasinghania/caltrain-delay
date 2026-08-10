@@ -6,8 +6,21 @@ from schema import InputData
 import pytz
 from datetime import datetime
 import json
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 model_path = "./xgboost.pkl"
 model = joblib.load(model_path)
