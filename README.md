@@ -14,12 +14,13 @@
 2. `cd app && bun dev`
 
 
-*Curl request for testing*
+### CURL Request for Server Testing
+
+- If you want to test this from the frontend, just enter the values below into the UI instead of into a curl request
+
 ```bash
 curl http://localhost:8000/predict \
   -H "Content-Type: application/json" \
-  -d '{"vehicle_id":137, "station_name":"San Jose Diridon"}'
+  -d '{"vehicle_id":<vehicle_id>, "station_name":<station_name>}'
 ```
-
-- direction_id 0 is northbound, 1 is southbound
-- vehicle id will be provided by the user
+*Go to the Caltrain website and find a vehicle id (route name) and a station name whose stop is coming soon, and put that into the request*
