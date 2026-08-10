@@ -1,0 +1,8 @@
+pydantic
+fastapi
+joblib
+retry_requests
+pytz
+datetime
+json
+pydantic
