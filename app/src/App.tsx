@@ -8,7 +8,7 @@ export function App() {
   const [delay, setDelay] = useState(0)
 
   function submit() {
-    fetch("http://localhost:8000/predict", {
+    fetch(`${import.meta.env.VITE_SERVER}/predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ vehicle_id: Number(vehicleId), station_name: stationName }),
