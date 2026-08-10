@@ -1,8 +1,6 @@
-pydantic
-fastapi
+fastapi[standard]
 joblib
 retry_requests
 pytz
-datetime
-json
-pydantic
+openmeteo_requests
+xgboost
