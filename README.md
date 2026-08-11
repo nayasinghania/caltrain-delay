@@ -1,4 +1,11 @@
 # Caltrain Delay Predictor
+Caltrain's trains are often delayed due to things like inclement weather, malfunctioning grade crossing safety gates, and high passenger loads. However, train delay information is only based on the train's current location and speed, rather than using past and current information holistically to determine what the true delay might be. This Caltrain delay predictor uses past delay information for trains and stops joined with historical weather information to predict how delayed a train will be at a specified stop. 
+
+## Statistics
+**XGBoost Model Results**
+- MAE: 0.82 minutes
+- RMSE: 1.52 minutes
+- R²: 0.71
 
 ## Setup
 
