@@ -39,6 +39,14 @@ export function App() {
           <div className="text-xs text-muted-foreground mt-2">
             Disclaimer: This project uses a machine learning model to make delay predictions, and results may be inaccurate. For real-time delay information, please check the official Caltrain station displays.
           </div>
+          <p className="mt-2">
+            <a
+              className="text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
+              href="https://www.caltrain.com/schedules/pdfs?active_tab=route_explorer_tab"
+            >
+              View the official Caltrain schedule
+            </a>
+          </p>
           <div className="font-mono text-xs text-muted-foreground mt-2">
             (Press <kbd>d</kbd> to toggle dark mode)
           </div>
