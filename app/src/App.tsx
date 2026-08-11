@@ -36,6 +36,9 @@ export function App() {
           />
           <Button className="mt-2" onClick={submit}>Submit</Button>
           <p className="mt-2">{delay != 0 ? delay.toFixed(2) + " minutes delayed" : "Enter the above information to get a prediction"}</p>
+          <div className="text-xs text-muted-foreground mt-2">
+            Disclaimer: This project uses a machine learning model to make delay predictions, and results may be inaccurate. For real-time delay information, please check the official Caltrain station displays.
+          </div>
           <div className="font-mono text-xs text-muted-foreground mt-2">
             (Press <kbd>d</kbd> to toggle dark mode)
           </div>
