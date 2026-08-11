@@ -36,6 +36,14 @@ export function App() {
           />
           <Button className="mt-2" onClick={submit}>Submit</Button>
           <p className="mt-2">{delay != 0 ? delay.toFixed(2) + " minutes delayed" : "Enter the above information to get a prediction"}</p>
+          <p className="mt-2">
+            <a
+              className="text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
+              href="https://www.caltrain.com/schedules/pdfs?active_tab=route_explorer_tab"
+            >
+              View the official Caltrain schedule
+            </a>
+          </p>
           <div className="font-mono text-xs text-muted-foreground mt-2">
             (Press <kbd>d</kbd> to toggle dark mode)
           </div>
