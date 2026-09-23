@@ -28,4 +28,4 @@ print(f"RMSE: {root_mean_squared_error(y_test, y_pred):.3f} minutes")
 print(f"R²:   {r2_score(y_test, y_pred):.3f}")
 
 print("\n Saving XGBoost Model as joblib")
-joblib.dump(model, "app/api/xgboost.pkl")
+joblib.dump(model, "api/xgboost.pkl")
